@@ -6,10 +6,10 @@ str(dataset)
 
 # row: set of data for each country
 
-# GDP per Capita
+# column 3: GDP per Capita
 gdp_per_capita = dataset[["gdp_per_capita"]]
 
-# Birth Rate
+# column 4: Birth Rate
 birth_rate = dataset[["birth_rate"]]
 
 
