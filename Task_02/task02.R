@@ -1,16 +1,18 @@
-dataset = read.csv2(file=".\\Task_02\\data\\Merged GDP and Birth Rate.csv",head=TRUE,sep=";",dec = ",",
-                    colClasses = c(country_name="character", country_code="character", gdp_per_capita = "numeric", birth_rate = "numeric"))
+# data analysis of germanys fossil energy consumption vs renewable energy consumption over time
+
+dataset = read.csv2(file=".\\Task_02\\data\\merged.csv",head=TRUE,sep=";",dec = ",",
+                    colClasses = c(year="numeric", fossil_consumption="numeric", renew_consumption = "numeric"))
 
 # lets look at the data set:
 str(dataset)
 
-# row: set of data for each country
+# column 1: years
 
-# column 3: GDP per Capita
-gdp_per_capita = dataset[["gdp_per_capita"]]
+# column 3: fossil energy consumption per capita
+fossil_consumption = dataset[["fossil_consumption"]]
 
-# column 4: Birth Rate
-birth_rate = dataset[["birth_rate"]]
+# column 4: renewable energy consumption per capita
+renew_consumption = dataset[["renew_consumption"]]
 
 
 #  Der Median einer Auflistung von Zahlenwerten ist der Wert, der an der mittleren (zentralen) Stelle steht, 
@@ -33,24 +35,20 @@ my_median = function(data) {
   
 }
 
-my_median(gdp_per_capita) # -> 5484.067
-my_median(birth_rate)     # -> 19.918
+my_median(fossil_consumption) # -> 83.60503
+my_median(renew_consumption)     # -> 3.881178
 
 # comparing with results from built-in function
-summary(gdp_per_capita)
-summary(birth_rate)
+summary(fossil_consumption)
+summary(renew_consumption)
 # looking good :-)
 
 
+cov(fossil_consumption, renew_consumption) # covariance is -7.7  -> high values of x correspond to low values of y
 
-# assumption: the higher the GDP per Capita in a country, the lower the birth rate
-# lets see:
-
-cov(gdp_per_capita, birth_rate) # covariance is -109056.6  -> high values of x correspond to low values of y
-
-cor(gdp_per_capita, birth_rate) # correlation is -0.53 -> so there is a moderate negative linear correlation between gdp and birth_rate
+cor(fossil_consumption, renew_consumption) # correlation is -0.94 -> so there is a strong negative linear correlation between fossil and renewable energy consumption
 
 
-plot = plot(gdp_per_capita, birth_rate,pch=2) # we can see that countries with low gdp tend to have a higher birthrate - values drop almost exponentially
+plot = plot(fossil_consumption, renew_consumption,pch=2) # reneable energy consumption increased while fossile energy consumption decreased
 
 
