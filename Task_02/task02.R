@@ -1,6 +1,9 @@
+#MT: kurz & schmerzlos - einwandfrei
+
 # data analysis of germanys fossil energy consumption vs renewable energy consumption over time
 
-dataset = read.csv2(file=".\\Task_02\\data\\merged.csv",head=TRUE,sep=";",dec = ",",
+#MT: / sollte auch in Windows funktionieren
+dataset = read.csv2(file="./Task_02/data/merged.csv",head=TRUE,sep=";",dec = ",",
                     colClasses = c(year="numeric", fossil_consumption="numeric", renew_consumption = "numeric"))
 
 # lets look at the data set:
@@ -38,6 +41,7 @@ my_median = function(data) {
 my_median(fossil_consumption) # -> 83.60503
 my_median(renew_consumption)     # -> 3.881178
 
+#MT: SanitCheck: sehr gut!
 # comparing with results from built-in function
 summary(fossil_consumption)
 summary(renew_consumption)
