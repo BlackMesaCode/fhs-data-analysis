@@ -55,4 +55,3 @@ cor(fossil_consumption, renew_consumption) # correlation is -0.94 -> so there is
 
 plot = plot(fossil_consumption, renew_consumption,pch=2) # reneable energy consumption increased while fossile energy consumption decreased
 
-
