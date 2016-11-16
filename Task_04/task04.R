@@ -28,14 +28,29 @@ internetusers_dataset = read.csv2(file=internetusers_path, head=TRUE,sep=",",dec
 
 # select country germany and only those columns that do not contain NA values
 
-gdp_germany = gdp_dataset[gdp_dataset$Country.Name == "Germany", sapply(gdp_germany, function(x) {is.double(x) && !is.na(x)})]
-co2_germany = co2_dataset[co2_dataset$Country.Name == "Germany", sapply(co2_dataset, function(x) {is.double(x) && !is.na(x)})]
-electricity_germany = electricity_dataset[electricity_dataset$Country.Name == "Germany", sapply(electricity_germany, function(x) {is.double(x) && !is.na(x)})]
-energy_germany = energy_dataset[energy_dataset$Country.Name == "Germany", sapply(energy_germany, function(x) {is.double(x) && !is.na(x)})]
-gnp_germany = gnp_dataset[gnp_dataset$Country.Name == "Germany", sapply(gnp_germany, function(x) {is.double(x) && !is.na(x)})]
-greenhousegas_germany = greenhousegas_dataset[greenhousegas_dataset$Country.Name == "Germany", sapply(greenhousegas_germany, function(x) {is.double(x) && !is.na(x)})]
-hightechexports_germany = hightechexports_dataset[hightechexports_dataset$Country.Name == "Germany", sapply(hightechexports_germany, function(x) {is.double(x) && !is.na(x)})]
-internetusers_germany = internetusers_dataset[internetusers_dataset$Country.Name == "Germany", sapply(internetusers_germany, function(x) {is.double(x) && !is.na(x)})]
+gdp_germany = gdp_dataset[gdp_dataset$Country.Name == "Germany",]
+gdp_germany = gdp_germany[,sapply(gdp_germany, function(x) {is.double(x) && !is.na(x)})]
+
+co2_germany = co2_dataset[co2_dataset$Country.Name == "Germany", ]
+co2_germany = co2_germany[,sapply(co2_dataset, function(x) {is.double(x) && !is.na(x)})]
+
+electricity_germany = electricity_dataset[electricity_dataset$Country.Name == "Germany",]
+electricity_germany = electricity_germany[,sapply(electricity_germany, function(x) {is.double(x) && !is.na(x)})]
+
+energy_germany = energy_dataset[energy_dataset$Country.Name == "Germany",]
+energy_germany = energy_germany[,sapply(energy_germany, function(x) {is.double(x) && !is.na(x)})]
+
+gnp_germany = gnp_dataset[gnp_dataset$Country.Name == "Germany",]
+gnp_germany = gnp_germany[,sapply(gnp_germany, function(x) {is.double(x) && !is.na(x)})]
+
+greenhousegas_germany = greenhousegas_dataset[greenhousegas_dataset$Country.Name == "Germany",]
+greenhousegas_germany = greenhousegas_germany[,sapply(greenhousegas_germany, function(x) {is.double(x) && !is.na(x)})]
+
+hightechexports_germany = hightechexports_dataset[hightechexports_dataset$Country.Name == "Germany",]
+hightechexports_germany = hightechexports_germany[,sapply(hightechexports_germany, function(x) {is.double(x) && !is.na(x)})]
+
+internetusers_germany = internetusers_dataset[internetusers_dataset$Country.Name == "Germany",]
+internetusers_germany = internetusers_germany[,sapply(internetusers_germany, function(x) {is.double(x) && !is.na(x)})]
 
 
 
@@ -106,7 +121,10 @@ points(x=tail(rownames(dataset), 3), y = predicted_values_1, pch=4, col="red")
 segments(as.numeric(tail(rownames(dataset), 3)), 
          dataset_tail$gdp, 
          as.numeric(tail(rownames(dataset), 3)), 
-         predicted_values, col="red")
+         predicted_values_1, col="red")
+
+
+linear_model_1
 
 
 
