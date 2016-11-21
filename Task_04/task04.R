@@ -105,22 +105,23 @@ dataset_head = head(dataset, nrow(dataset)-3)
 ##################### linear model #1  ##################### 
 
 # our linear model gets to see all the data MINUS the last three years (for which we want to do the prediction)
-linear_model_1 = lm(gdp ~ co2 + greenhousegas + gnp, data=dataset_head)
+linear_model_1 = lm(gdp ~ co2 + energy + greenhousegas, data=dataset_head)
 
-predicted_values_1 = predict(linear_model_1, data.frame(co2=dataset_tail$co2, 
-                                                      greenhousegas=dataset_tail$greenhousegas, 
-                                                      gnp=dataset_tail$gnp))
+predicted_values_1 = predict(linear_model_1, data.frame(co2=dataset$co2, 
+                                                      energy=dataset$energy,
+                                                      greenhousegas=dataset$greenhousegas))
 
 # drawing all of our datapoints
 plot(x=rownames(dataset),y=dataset$gdp,pch=16, col="grey")
 
 # drawing the predicted values for the last three years using the linear model
-points(x=tail(rownames(dataset), 3), y = predicted_values_1, pch=4, col="red")
+#points(x=tail(rownames(dataset), 3), y = predicted_values_1, pch=4, col="red")
+points(rownames(dataset), y = predicted_values_1, pch=4, col="red")
 
 #drawing the residuals
-segments(as.numeric(tail(rownames(dataset), 3)), 
-         dataset_tail$gdp, 
-         as.numeric(tail(rownames(dataset), 3)), 
+segments(as.numeric(rownames(dataset), 3), 
+         dataset$gdp, 
+         as.numeric(rownames(dataset), 3), 
          predicted_values_1, col="red")
 
 
@@ -130,37 +131,38 @@ linear_model_1
 
 ##################### linear model #2  ##################### 
 
-linear_model_2 = lm(gdp ~ energy + electricity, data=as.data.frame(dataset_head))
+linear_model_2 = lm(gdp ~ gnp + electricity, data=as.data.frame(dataset_head))
 
-predicted_values_2 = predict(linear_model_2, data.frame(energy=dataset_tail$energy, 
-                                                        electricity=dataset_tail$electricity))
+predicted_values_2 = predict(linear_model_2, data.frame(gnp=dataset$gnp, 
+                                                        electricity=dataset$electricity))
 
 plot(x=rownames(dataset),y=dataset$gdp,pch=16, col="grey")
 
-points(x=tail(rownames(dataset), 3), y = predicted_values_2, pch=4, col="blue")
+points(x=rownames(dataset), y = predicted_values_2, pch=4, col="blue")
 
-segments(as.numeric(tail(rownames(dataset), 3)), 
-         dataset_tail$gdp, 
-         as.numeric(tail(rownames(dataset), 3)), 
-         predicted_values_2, col="red")
+segments(as.numeric(rownames(dataset)), 
+         dataset$gdp, 
+         as.numeric(rownames(dataset)), 
+         predicted_values_2, col="blue")
 
 
 
 
 ##################### linear model #3  #####################
+dev.off()
 
 linear_model_3 = lm(gdp ~ hightechexports + internetusers, data=as.data.frame(dataset_head))
 
-predicted_values_3 = predict(linear_model_3, data.frame(hightechexports=dataset_tail$hightechexports, 
-                                                        internetusers=dataset_tail$internetusers))
+predicted_values_3 = predict(linear_model_3, data.frame(hightechexports=dataset$hightechexports, 
+                                                        internetusers=dataset$internetusers))
 
 plot(x=rownames(dataset),y=dataset$gdp,pch=16, col="grey")
 
-points(x=tail(rownames(dataset), 3), y = predicted_values_3, pch=4, col="magenta")
+points(x=rownames(dataset), y = predicted_values_3, pch=4, col="magenta")
 
-segments(as.numeric(tail(rownames(dataset), 3)), 
-         dataset_tail$gdp, 
-         as.numeric(tail(rownames(dataset), 3)), 
-         predicted_values_3, col="red")
+segments(as.numeric(rownames(dataset)), 
+         dataset$gdp, 
+         as.numeric(rownames(dataset)), 
+         predicted_values_3, col="magenta")
 
 
