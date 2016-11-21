@@ -84,6 +84,9 @@ colnames(dataset) = c("gdp", "co2", "electricity", "energy", "gnp", "greenhouseg
 new_row_names = as.numeric(sapply(rownames(dataset), function(x) { substr(x,2,nchar(x)) }))
 rownames(dataset) = new_row_names
 
+# lets have a look at our final, beautifully handcraftet dataset :-)
+# View(dataset)
+
 # getting the final vectors for further processing
 gdp = dataset[,"gdp"]
 co2 = dataset[,"co2"]
@@ -124,7 +127,6 @@ segments(as.numeric(rownames(dataset), 3),
          predicted_values_1, col="red")
 
 
-
 ##################### linear model #2  ##################### 
 
 dev.off()
@@ -144,8 +146,6 @@ segments(as.numeric(rownames(dataset)),
          predicted_values_2, col="blue")
 
 
-
-
 ##################### linear model #3  #####################
 dev.off()
 
@@ -163,4 +163,107 @@ segments(as.numeric(rownames(dataset)),
          as.numeric(rownames(dataset)), 
          predicted_values_3, col="magenta")
 
+
+
+##################### comparing model 1-3 by their residuals #####################
+
+
+# analyzing the residuals
+summary(linear_model_1)
+summary(linear_model_2)
+summary(linear_model_3)
+
+# Residuals of linear_model_1:
+#Min         1Q         Median         3Q        Max 
+#-5.510e+11 -1.777e+11 -3.209e+10  7.305e+10  5.906e+11
+
+# as we see, the summaries of our residuals gives us only absolute and very domain specific values, 
+# which makes it hard to compare them with other models
+# comparison is easier if we divide the residuals by their standard deviation. 
+# so lets have a look at the standardized residuals:
+
+# creating a investigation dataframe for linear_model_1
+linear_model_1.investigation = data.frame(r = residuals(linear_model_1))
+linear_model_1.investigation = cbind(linear_model_1.investigation, rs = rstandard(linear_model_1))
+
+median(linear_model_1.investigation$rs)
+max(linear_model_1.investigation$rs)
+min(linear_model_1.investigation$rs)
+
+
+# creating a investigation dataframe for linear_model_2
+linear_model_2.investigation = data.frame(r = residuals(linear_model_2))
+linear_model_2.investigation = cbind(linear_model_2.investigation, rs = rstandard(linear_model_2))
+
+median(linear_model_2.investigation$rs)
+max(linear_model_2.investigation$rs)
+min(linear_model_2.investigation$rs)
+
+
+# creating a investigation dataframe for linear_model_3
+linear_model_3.investigation = data.frame(r = residuals(linear_model_3))
+linear_model_3.investigation = cbind(linear_model_3.investigation, rs = rstandard(linear_model_3))
+
+median(linear_model_3.investigation$rs)
+max(linear_model_3.investigation$rs)
+min(linear_model_3.investigation$rs)
+
+
+# comparing the medians with each other
+absolute_rs_medians = abs(c(median(linear_model_1.rs), median(linear_model_2.rs), median(linear_model_3.rs)))
+absolute_rs_medians
+min(absolute_rs_medians) # linear_model_2 has the lowest median of standardized residuals
+
+
+
+
+#standardized residuals greater than 2 for linear_model_1
+linear_model_1.investigation$rs.greater.2 = abs(linear_model_1.investigation$rs) > 2
+sum(linear_model_1.investigation$rs.greater.2) / nrow(linear_model_1.investigation) # 15% of our data has an rs > 2
+
+#standardized residuals greater than 2.5 for linear_model_1
+linear_model_1.investigation$rs.greater.2.5 = abs(linear_model_1.investigation$rs) > 2.5
+sum(linear_model_1.investigation$rs.greater.2.5) / nrow(linear_model_1.investigation) # 0% of our data has an rs > 2.5
+View(linear_model_1.investigation)
+
+
+
+
+#standardized residuals greater than 2 for linear_model_2
+linear_model_2.investigation$rs.greater.2 = abs(linear_model_2.investigation$rs) > 2
+sum(linear_model_2.investigation$rs.greater.2) / nrow(linear_model_2.investigation) # 0% of our data has an rs > 2
+
+#standardized residuals greater than 2.5 for linear_model_2
+linear_model_2.investigation$rs.greater.2.5 = abs(linear_model_2.investigation$rs) > 2.5
+sum(linear_model_2.investigation$rs.greater.2.5) / nrow(linear_model_2.investigation) # 0% of our data has an rs > 2.5
+View(linear_model_2.investigation)
+
+
+
+
+#standardized residuals greater than 2 for linear_model_3
+linear_model_3.investigation$rs.greater.2 = abs(linear_model_3.investigation$rs) > 2
+sum(linear_model_3.investigation$rs.greater.2) / nrow(linear_model_3.investigation) # 5% of our data has an rs > 2
+
+#standardized residuals greater than 2.5 for linear_model_3
+linear_model_3.investigation$rs.greater.2.5 = abs(linear_model_3.investigation$rs) > 2.5
+sum(linear_model_3.investigation$rs.greater.2.5) / nrow(linear_model_3.investigation) # 0% of our data has an rs > 2.5
+View(linear_model_3.investigation)
+
+
+
+
+# linear_model_2 seems the most accurate by just looking at the residuals
+# it has the lowest median of the standardized residuals, which means it has the lowest error
+# moreover it has 0% standardizes residuals that are over 2.0 compared to model 1 (which had 15%) and model 3 (which had 5%)
+
+# linear_model_2 examines the impacts of gnp and electricity(independand variables) to the gdp (dependand variable)
+# we can observe a good correlation between gnp and gdp (due to their relative similiar definition)
+# moreover we can observe a good correlation beween electricity and gdp (the more value a country is producing the more electricity it needs for its industry ..) 
+# even though we have a strong correlation between those values we cant conduct a causal relationship. 
+# our gdp doesnt start to grow magically as soon as we increase the electricity consumption. 
+# we might just waste it on powering tvs and microwaves ... which surely wont increase our gdp ...
+
+
+# in task 5 we will further evaluate the characteristics of our linear models
 
