@@ -114,8 +114,7 @@ predicted_values_1 = predict(linear_model_1, data.frame(co2=dataset$co2,
 # drawing all of our datapoints
 plot(x=rownames(dataset),y=dataset$gdp,pch=16, col="grey")
 
-# drawing the predicted values for the last three years using the linear model
-#points(x=tail(rownames(dataset), 3), y = predicted_values_1, pch=4, col="red")
+# drawing the predicted values using the linear model
 points(rownames(dataset), y = predicted_values_1, pch=4, col="red")
 
 #drawing the residuals
@@ -125,11 +124,10 @@ segments(as.numeric(rownames(dataset), 3),
          predicted_values_1, col="red")
 
 
-linear_model_1
-
-
 
 ##################### linear model #2  ##################### 
+
+dev.off()
 
 linear_model_2 = lm(gdp ~ gnp + electricity, data=as.data.frame(dataset_head))
 
