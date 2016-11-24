@@ -79,6 +79,34 @@ View(linear_model_3.investigation)
 # i already compared those in task 04
 
 
+if ("car" %in% rownames(installed.packages()) == T) {
+  print("car already installed")
+} else {
+  install.packages("car")
+  library(car)
+}
+
+
+##################### Multicollinearity analyzation  #####################
+
+vif(linear_model_1)
+vif(linear_model_2)
+vif(linear_model_3)
+
+##################### Heteroscedasticity  #####################
+
+dev.off()
+
+plot(dataset)
+
+plot(linear_model_1)
+
+plot(linear_model_2)
+
+plot(linear_model_3)
+
+
+
 
 
 # the pdf file describing Heteroscedasticity and Multicollinearity resides also in the Task_05 folder within git
