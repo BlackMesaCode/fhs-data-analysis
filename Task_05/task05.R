@@ -93,16 +93,14 @@ vif(linear_model_1)
 vif(linear_model_2)
 vif(linear_model_3)
 
+View(cor(dataset))
+
 ##################### Heteroscedasticity  #####################
 
 dev.off()
 
-plot(dataset)
-
 plot(linear_model_1)
-
 plot(linear_model_2)
-
 plot(linear_model_3)
 
 
