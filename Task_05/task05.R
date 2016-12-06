@@ -1,4 +1,6 @@
-source("./Task_04/task04.R")
+#MT: prinzipiell super - beim Laden der DataSets müssen Sie aber aufpassen (kann aber sein, dass ich den Pfad in Task04 bei Ihnen geändert habe)
+#MT: ich hab mir die datastes in den gleich Ordner kopiert
+source("./task04.R")
 
 # now lets futher evaluate our linear models:
 
@@ -11,6 +13,11 @@ linear_model_1.investigation$levereage = hatvalues(linear_model_1)
 
 h.mean.1 = mean(linear_model_1.investigation$levereage) # calculating regular mean of all leverages
 h.mean.2 = length(linear_model_1$coefficients) / nrow(dataset)
+
+#MT:Haben Sie vl. einmal das Datenset inkl. der letzen 3 Zeilen und einmal exkl. verwendet? weil:
+h.mean.3 = length(linear_model_1$coefficients) / (nrow(dataset)-3)
+h.mean.1-h.mean.3 #quite zero
+
 h.mean.1-h.mean.2  # not quite 0 ... not sure why ...
 
 linear_model_1.investigation$levereage[which(linear_model_1.investigation$rs > 2.0)]  # leverage values whose rs values > 2.0

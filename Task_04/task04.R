@@ -2,7 +2,7 @@ data_folder =  "./data"
 
 # dependand variable
 gdp_path = file.path(data_folder, "gdp.csv")
-
+gdp_path
 # independand variables
 co2_path = file.path(data_folder, "co2.csv")
 electricity_path = file.path(data_folder, "electricity.csv")
