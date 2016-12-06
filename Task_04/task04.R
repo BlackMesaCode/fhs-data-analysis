@@ -1,4 +1,4 @@
-data_folder =  "./Task_04/data/"
+data_folder =  "./data"
 
 # dependand variable
 gdp_path = file.path(data_folder, "gdp.csv")
@@ -28,6 +28,7 @@ internetusers_dataset = read.csv2(file=internetusers_path, head=TRUE,sep=",",dec
 
 # select country germany and only those columns that do not contain NA values
 
+#MT: Sie hätten sich ws leichter getan, wenn Sie zuerst die Daten kombiniert hätten und dann mit complete.cases jene gefiltert hätten für die es in allen Spalten Daten gibt
 gdp_germany = gdp_dataset[gdp_dataset$Country.Name == "Germany",]
 gdp_germany = gdp_germany[,sapply(gdp_germany, function(x) {is.double(x) && !is.na(x)})]
 
@@ -62,6 +63,7 @@ common_cols = Reduce(intersect, list(colnames(gdp_germany), colnames(co2_germany
 
 
 # selecting only the common columns
+#MT: Hier hätten Sie merge() anwenden können
 gdp_germany = gdp_germany[, common_cols]
 co2_germany = co2_germany[, common_cols]
 electricity_germany = electricity_germany[, common_cols]
@@ -74,6 +76,8 @@ internetusers_germany = internetusers_germany[, common_cols]
 # merging into one datasets
 dataset = rbind(gdp_germany, co2_germany, electricity_germany, energy_germany, gnp_germany, 
                 greenhousegas_germany, hightechexports_germany, internetusers_germany)
+
+#MT: hier wäre ein Sanity-Check noch gut gewesen nachdem Sie hier recht aufwendig die Daten zusammengeführt haben
 
 # transpose (transposing causes the dataset to be converted to a matrix, so we have to convert it back to a dataframe afterwards)
 dataset = t(dataset)
@@ -88,7 +92,10 @@ rownames(dataset) = new_row_names
 # View(dataset)
 
 # getting the final vectors for further processing
-gdp = dataset[,"gdp"]
+
+# MT: Sie könen auch imt  data$gdp auf die spalte zugreifen
+# MT: Wofür benötigen Sie die Vektoren? Für die Formual in lm() sind sie nicht nötig, hier werden einfach die colnames() herangezogen
+gdp = dataset[,"gdp"] 
 co2 = dataset[,"co2"]
 electricity = dataset[,"electricity"]
 energy = dataset[,"energy"]
@@ -133,6 +140,7 @@ dev.off()
 
 linear_model_2 = lm(gdp ~ gnp + electricity, data=as.data.frame(dataset_head))
 
+#MT: predict mathched die spalten anhand der colnames(); wäre nicht nötig gwesen hier ein Subset der Daten zu verwenden
 predicted_values_2 = predict(linear_model_2, data.frame(gnp=dataset$gnp, 
                                                         electricity=dataset$electricity))
 
@@ -208,9 +216,14 @@ median(linear_model_3.investigation$rs)
 max(linear_model_3.investigation$rs)
 min(linear_model_3.investigation$rs)
 
+#MT: hier haben Sie vergessen die Variablen umzubennen
+# comparing the medians with each other
+#absolute_rs_medians = abs(c(median(linear_model_1.rs), median(linear_model_2.rs), median(linear_model_3.rs)))
+#absolute_rs_medians
+#min(absolute_rs_medians) # linear_model_2 has the lowest median of standardized residuals
 
 # comparing the medians with each other
-absolute_rs_medians = abs(c(median(linear_model_1.rs), median(linear_model_2.rs), median(linear_model_3.rs)))
+absolute_rs_medians = abs(c(median(linear_model_1.investigation$rs), median(linear_model_2.investigation$rs), median(linear_model_3.investigation$rs)))
 absolute_rs_medians
 min(absolute_rs_medians) # linear_model_2 has the lowest median of standardized residuals
 
@@ -250,7 +263,7 @@ linear_model_3.investigation$rs.greater.2.5 = abs(linear_model_3.investigation$r
 sum(linear_model_3.investigation$rs.greater.2.5) / nrow(linear_model_3.investigation) # 0% of our data has an rs > 2.5
 View(linear_model_3.investigation)
 
-
+#MT: feine und aufwendige Evaluierung, sehr gut!
 
 
 # linear_model_2 seems the most accurate by just looking at the residuals
